@@ -38,7 +38,7 @@ If the installation was successful, you should be able to run the following comm
 ## Run Unit Testing
     $ npm test
 
-## Run Code Coverage
+## Run Code Coverage ## 
     $ npm run coverage
 
 ## Run Application
