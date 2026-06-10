@@ -162,14 +162,12 @@ jobs:
 
       
    
-      - name: Decode Kubeconfig safely
-        env:
-          RAW_B64_KUBECONFIG: ${{ secrets.KUBECONFIG_DATA }}
-        run: |
-          mkdir -p ~/.kube
-          echo "$RAW_B64_KUBECONFIG" | base64 --decode > ~/.kube/config
-          chmod 600 ~/.kube/config
-          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+      - name: Set Kubeconfig
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_DATA }}
+
         
       - name: Fetch kubernetes cluster details
         run: | 
