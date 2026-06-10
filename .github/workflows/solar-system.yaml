@@ -163,14 +163,16 @@ jobs:
       
    
       - name: Decode Kubeconfig safely
+        env:
+          RAW_B64_KUBECONFIG: ${{ secrets.KUBECONFIG_DATA }}
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > ~/.kube/config
+          echo "$RAW_B64_KUBECONFIG" | base64 --decode > ~/.kube/config
           chmod 600 ~/.kube/config
           echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
-
-      - name: Fetch Kubernetes Cluster Details 
-        run: |
+        
+      - name: Fetch kubernetes cluster details
+        run: | 
           kubectl version
           echo "---------------------"
           kubectl get nodes
