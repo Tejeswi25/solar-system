@@ -159,16 +159,21 @@ jobs:
         uses: azure/setup-kubectl@v4
         with:
           version: 'v1.26.0' # default is latest stable
-      - name: Set kubeconfig
-        uses: azure/k8s-set-context@v3
-        with:
-          method: kubeconfig 
-          kubeconfig: ${{ secrets.KUBECONFIG_DATA }}
+
+      
+   
+      - name: Decode Kubeconfig safely
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_DATA }}" | base64 --decode > ~/.kube/config
+          chmod 600 ~/.kube/config
+          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+
       - name: Fetch Kubernetes Cluster Details 
         run: |
-          kubectl version --short 
-          echo ---------------------
-          kubectl get nodes 
-          
+          kubectl version
+          echo "---------------------"
+          kubectl get nodes
+      
         
 
