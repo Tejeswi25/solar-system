@@ -162,16 +162,18 @@ jobs:
 
       
    
-      - name: Set Kubeconfig
-        uses: azure/k8s-set-context@v3
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG_DATA }}
+      - name: Save Kubeconfig Plaintext Safely
+        run: |
+          mkdir -p ~/.kube
+          cat << 'EOF' > ~/.kube/config
+          ${{ secrets.KUBECONFIG_DATA }}
+          EOF
+          chmod 600 ~/.kube/config
+          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
 
-        
-      - name: Fetch kubernetes cluster details
-        run: | 
-          kubectl version
+      - name: Fetch Kubernetes Cluster Details 
+        run: |
+          kubectl version --client
           echo "---------------------"
           kubectl get nodes
       
