@@ -169,6 +169,7 @@ jobs:
 
       - name: Test Connection to PC 
         run: |
+          export KUBERNETES_MASTER_HTTP_CLIENT_HEADERS="ngrok-skip-browser-warning:true"
           kubectl config use-context docker-desktop 
           kubectl cluster-info 
           kubectl get nodes 
