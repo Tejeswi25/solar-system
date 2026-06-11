@@ -159,23 +159,17 @@ jobs:
         uses: azure/setup-kubectl@v4
         with:
           version: 'v1.26.0' # default is latest stable
-
       
-   
-      - name: Save Kubeconfig Plaintext Safely
+      - name: Inject Kubeconfig Context 
         run: |
-          mkdir -p ~/.kube
-          cat << 'EOF' > ~/.kube/config
-          ${{ secrets.KUBECONFIG_DATA }}
-          EOF
-          chmod 600 ~/.kube/config
-          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config
+          kubectl config set-cluster docker-desktop --insecure-skip-tls-verify=true
 
-      - name: Fetch Kubernetes Cluster Details 
+      - name: Test Connection to PC 
         run: |
-          kubectl version --client
-          echo "---------------------"
-          kubectl get nodes
-      
+          kubectl config use-context docker-desktop 
+          kubectl cluster-info 
+          kubectl get nodes 
         
 
