@@ -164,6 +164,7 @@ jobs:
         run: |
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG_DATA }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
           kubectl config set-cluster docker-desktop --insecure-skip-tls-verify=true
 
       - name: Test Connection to PC 
