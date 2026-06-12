@@ -148,4 +148,18 @@ jobs:
           kubectl cluster-info 
           kubectl get nodes 
       
+      - name: Replace Token in Manifest files
+        uses: cschleiden/replace-tokens@v1
+        with:
+          tokenPrefix: '_{_'
+          tokenSuffix: '_}_'
+          files: '["kubernetes/development/*.yaml"]'
+        env:
+          NAMESPACE: ${{ vars.NAMESPACE }}
+          
+          IMAGE: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
+      - name: Deploy Manifests to EKS Cluster 
+        run: |
+          kubectl apply -f kubernetes/development/
+      
      
