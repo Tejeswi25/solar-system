@@ -141,7 +141,7 @@ jobs:
           audience: sts.amazonaws.com
       - name: Inject EKS Kubeconfig Context 
         run: |
-          aws eks update-config --region ap-southeast-1 --name github-eks-cluster
+          aws eks update-kubeconfig --region ap-southeast-1 --name github-eks-cluster
 
       - name: Test Connection to AWS EKS 
         run: |
