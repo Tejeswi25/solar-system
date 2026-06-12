@@ -153,7 +153,7 @@ jobs:
         with:
           tokenPrefix: '_{_'
           tokenSuffix: '_}_'
-          files: '["kubernetes/development/*.yaml"]'
+          files: '["kubernetes/staging/*.yaml"]'
         env:
           NAMESPACE: ${{ vars.NAMESPACE }}
           IMAGE: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
@@ -162,7 +162,7 @@ jobs:
         run: |
           # The dry-run flag checks if it exists; if not, it applies it cleanly without throwing errors
           kubectl create namespace development --dry-run=client -o yaml | kubectl apply -f -
-            
+
       - name: create MongoDB Secret 
         run: |
           kubectl -n ${{ vars.NAMESPACE }} create secret generic mongo-db-creds \
